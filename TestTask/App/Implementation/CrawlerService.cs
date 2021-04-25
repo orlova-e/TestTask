@@ -34,7 +34,7 @@ namespace TestTask.App.Implementation
             };
 
             _repository.SetOrUpdateEntry(id, crawled);
-            BackgroundCount(id, crawled);
+            CountAsync(id, crawled);
 
             return id;
         }
@@ -52,7 +52,7 @@ namespace TestTask.App.Implementation
 
         public int GetResult(Guid id) => _repository.GetEntry(id)?.Result ?? -1;
 
-        private void BackgroundCount(Guid id, Crawled crawled)
+        private void CountAsync(Guid id, Crawled crawled)
             => Task.Run(async () =>
             {
                 if (await _webService.TryGetPageAsync(crawled.Url))
