@@ -1,29 +1,21 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using TestTask.App.Implementation;
+using TestTask.App.Interfaces;
+using TestTask.Repo.Implementation;
+using TestTask.Repo.Interfaces;
 
 namespace TestTask
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient<IWebService, WebService>();
+            services.AddTransient<ICrawlerService, CrawlerService>();
 
             services.AddControllers();
         }
@@ -38,8 +30,6 @@ namespace TestTask
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
