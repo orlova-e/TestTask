@@ -61,7 +61,8 @@ namespace TestTask.App.Implementation
                     {
                         string text = _webService.GetText();
 
-                        text = Regex.Replace(text, @"([^\w-][^A-Za-zА-Яа-я]+)|[\d]|(- )", " ");
+                        text = Regex.Replace(text, @"([^\w-][^A-Za-zА-Яа-я]+)", " ");
+                        text = Regex.Replace(text, @"[\d]", " ");
 
                         crawled.Result = text.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)?.Length ?? default;
                         crawled.Status = ProcessStatus.Successfully;
